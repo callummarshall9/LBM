@@ -3,7 +3,7 @@ Implementation of Lattice Boltzmann in 3D using D3Q15
 
 # Lattice Boltzmann Implementation
 
-1. Implementation, initialises using the equilibrium distributionb.
+1. Implementation, initialises using the equilibrium distribution.
 
 2. Time Step Algorithm
 - Macroscopic moments are computed
