@@ -1,45 +1,5 @@
-#include <vector>
-
-class LBM {
-
-public:
-	void initialise();
-	LBM(int grid_size);
-	void output_density();
-	void output_velocity();
-	void output_test();
-	float compute_density_moment(int x, int y, int z);
-	vector3* compute_momentum_density_moment(int x, int y, int z);
-private:
-	float* density_field;
-	std::vector<vector3> velocity_field;
-	float* equilibrium_distribution;
-	int grid_size;
-	int scalar_index(int x, int y, int z);
-	int scalar_index(int x, int y, int z, int w);
-	void output_array(float *array);
-	//Lattice directions using D3DQ15. assumed speed of sound c_s = 1/sqrt(3).
-	const int direction_size = 15;
-	vector3 directions[15] = {//c_i vectors.
-		vector3(0.0,0.0,0.0),
-		vector3(1.0,0.0,0.0),
-		vector3(-1.0,0.0,0.0),
-		vector3(0.0,1.0,0.0),
-		vector3(0.0,-1.0,0.0),
-		vector3(0.0,0.0,1.0),
-		vector3(0.0,0.0,-1.0),
-		vector3(1.0,1.0,1.0),
-		vector3(-1.0,-1.0,-1.0),
-		vector3(1.0,1.0,-1.0),
-		vector3(1.0,-1.0,-1.0),
-		vector3(1.0,-1.0,1.0),
-		vector3(-1.0,1.0,-1.0),
-		vector3(-1.0,1.0,1.0),
-		vector3(1.0,-1.0,-1.0) 
-	};
-	float weights[15] = { (2.0/9.0),(1.0/9.0),(1.0/9.0),(1.0/9.0),(1.0/9.0),(1.0/9.0),(1.0/9.0),(1.0/72.0),(1.0/72.0),(1.0/72.0),(1.0/72.0),(1.0/72.0),(1.0/72.0),(1.0,72.0),(1.0/72.0) };
-	//This will result in a change in the equlibrium function which will be reflected below.
-};
+#include "headers/LBM.hpp"
+#include "headers/vector3.hpp"
 
 LBM::LBM(int grid_size) {
 	this->grid_size = grid_size;

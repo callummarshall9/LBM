@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <iostream>
-#include "vector3.cpp"
-#include "LBM.cpp"
+#include "headers/LBM.hpp"
+#include "headers/vector3.hpp"
 
 int main(int argc, char** argv) {
 	LBM solver(64);
