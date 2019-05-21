@@ -3,5 +3,7 @@ CFLAGS=-Wall
 HEADERS=headers/*.hpp
 SRC=source/*.cpp
 OUTPUT=main
+
 hellomake:
 	$(CC) $(CFLAGS) -I$(shell pwd) main.cpp $(SRC) -o $(OUTPUT)
+	sh make_buildnum.sh
