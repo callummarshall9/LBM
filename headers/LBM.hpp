@@ -14,7 +14,12 @@ public:
 	void output_velocity();
 	void output_test();
 	float compute_density_moment(int x, int y, int z);
-	vector3* compute_momentum_density_moment(int x, int y, int z);
+	void compute_density_moment();
+	void compute_momentum_density_moment(int x, int y, int z);
+	void compute_momentum_density_moment();
+	void stream();//Stream the current equilibrium distribution to the next distribution.
+	void collision();//Perform the collision step. Assumes delta t / tau = 1.
+	void perform_timestep();//Delta t = 1 lattice unit.
 private:
 	float* density_field;
 	std::vector<vector3> velocity_field;
