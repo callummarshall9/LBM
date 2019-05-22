@@ -110,6 +110,7 @@ void LBM::stream() {
 			}
 		}
 	}
+	free(this->equilibrium_distribution);
 	this->equilibrium_distribution = new_distribution;
 }
 
