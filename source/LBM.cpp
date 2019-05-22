@@ -31,7 +31,7 @@ int LBM::scalar_index(int x, int y, int z) {
 }
 
 int LBM::scalar_index(int x, int y, int z, int w) {
-	return (w * this->direction_size * this->grid_size * this->grid_size) + 
+	return (w * this->direction_size * this->grid_size * this->grid_size) +
 		(z * this->grid_size * this->grid_size) + (y * this->grid_size) + x;
 }
 
@@ -82,7 +82,7 @@ void LBM::compute_momentum_density_moment(int x, int y, int z) {
 		current_velocity.set_x(momentum_density.get_x() / this->density_field[this->scalar_index(x,y,z)]);
 		current_velocity.set_y(momentum_density.get_y() / this->density_field[this->scalar_index(x,y,z)]);
 		current_velocity.set_z(momentum_density.get_z() / this->density_field[this->scalar_index(x,y,z)]);
-		
+
 	}
 }
 
@@ -130,13 +130,9 @@ void LBM::collision() {//Performs the collision step.
 }
 
 void LBM::perform_timestep() {
-	std::cout << "Performing streaming" << std::endl;
 	this->stream();
-	std::cout << "Performing density moment" << std::endl;
 	this->compute_density_moment();
-	std::cout << "Performing momentum density moment" << std::endl;
 	this->compute_momentum_density_moment();
-	std::cout << "Performing collision step" << std::endl;
 	this->collision();
 }
 
