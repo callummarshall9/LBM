@@ -55,7 +55,7 @@ void LBM::output_velocity() {
 
 float LBM::compute_density_moment(int x, int y, int z) {
 	float density = 0;
-	for(int i = 0; i < this->grid_size; i = i + 1) {
+	for(int i = 0; i < this->direction_size; i = i + 1) {
 		density = density + this->equilibrium_distribution[this->scalar_index(x,y,z,i)];
 		this->density_field[this->scalar_index(x,y,z)] = density;
 	}
@@ -74,7 +74,7 @@ void LBM::compute_density_moment() {
 
 void LBM::compute_momentum_density_moment(int x, int y, int z) {
 	vector3 momentum_density;
-	for(int i = 0; i < this->grid_size; i = i + 1) {
+	for(int i = 0; i < this->direction_size; i = i + 1) {
 		momentum_density.set_x(momentum_density.get_x() + this->directions[i].get_x() * this->equilibrium_distribution[this->scalar_index(x,y,z,i)]);
 		momentum_density.set_y(momentum_density.get_y() + this->directions[i].get_y() * this->equilibrium_distribution[this->scalar_index(x,y,z,i)]);
 		momentum_density.set_z(momentum_density.get_z() + this->directions[i].get_z() * this->equilibrium_distribution[this->scalar_index(x,y,z,i)]);
@@ -134,4 +134,20 @@ void LBM::perform_timestep() {
 	this->compute_momentum_density_moment();
 	std::cout << "Performing collision step" << std::endl;
 	this->collision();
+}
+
+void LBM::output_lbm_data(std::string filename) {
+	std::ofstream output_stream;
+	output_stream.open(filename, std::ofstream::out | std::ofstream::app);
+	output_stream << "x,y,z,p,u_x,u_y,u_z" << std::endl;
+	for(int x = 0; x <  this->grid_size; x = x + 1) {
+		for(int y = 0; y <  this->grid_size; y = y + 1) {
+			for(int z = 0; z < this->grid_size; z = z + 1) {
+				float density = this->density_field[this->scalar_index(x,y,z)];
+				vector3 fluid_velocity = this->velocity_field[this->scalar_index(x,y,z)];
+				output_stream << x << "," << y << "," << z << "," << density << "," << fluid_velocity.get_x() << "," << fluid_velocity.get_y() << "," << fluid_velocity.get_z() << std::endl;
+			}
+		}
+	}
+	output_stream.close();
 }

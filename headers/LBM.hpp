@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <vector>
 #include <iostream>
+#include <string>
+#include <fstream>
 #include "headers/vector3.hpp"
 #ifndef LBM_H_FILE
 #define LBM_H_FILE
@@ -20,6 +22,7 @@ public:
 	void stream();//Stream the current equilibrium distribution to the next distribution.
 	void collision();//Perform the collision step. Assumes delta t / tau = 1.
 	void perform_timestep();//Delta t = 1 lattice unit.
+	void output_lbm_data(std::string filename);
 private:
 	float* density_field;
 	std::vector<vector3> velocity_field;
