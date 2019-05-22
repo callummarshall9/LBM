@@ -97,12 +97,15 @@ void LBM::compute_momentum_density_moment() {
 }
 
 void LBM::stream() {
-	float* new_distribution = (float*)malloc(this->grid_size * this->grid_size * this->grid_size * this->direction_size);
+	float* new_distribution = (float*)malloc(sizeof(float) * this->grid_size * this->grid_size * this->grid_size * this->direction_size);
 	for(int x = 0; x < this->grid_size; x = x + 1) {
 		for(int y = 0; y < this->grid_size; y = y + 1) {
 			for(int z = 0; z < this->grid_size; z = z + 1) {
 				for(int i = 0; i < this->direction_size; i = i + 1) {
-					new_distribution[this->scalar_index(x,y,z,i)] = this->equilibrium_distribution[this->scalar_index(x,y,z,i)];
+					int xmd = (this->grid_size + x - (int)this->directions[i].get_x()) % this->grid_size;
+					int ymd = (this->grid_size + y - (int)this->directions[i].get_y()) % this->grid_size;
+					int zmd = (this->grid_size + z - (int)this->directions[i].get_z()) % this->grid_size;
+					new_distribution[this->scalar_index(x,y,z,i)] = this->equilibrium_distribution[this->scalar_index(xmd,ymd,zmd,i)];
 				}
 			}
 		}
