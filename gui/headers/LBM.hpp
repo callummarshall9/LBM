@@ -48,7 +48,7 @@ private:
 		vector3(1.0,-1.0,1.0),
 		vector3(-1.0,1.0,-1.0),
 		vector3(-1.0,1.0,1.0),
-		vector3(1.0,-1.0,-1.0) 
+		vector3(1.0,-1.0,-1.0)
 	};
 	float weights[15] = { (2.0/9.0),(1.0/9.0),(1.0/9.0),(1.0/9.0),(1.0/9.0),(1.0/9.0),(1.0/9.0),(1.0/72.0),(1.0/72.0),(1.0/72.0),(1.0/72.0),(1.0/72.0),(1.0/72.0),(1.0/72.0),(1.0/72.0) };
 	//This will result in a change in the equlibrium function which will be reflected below.
