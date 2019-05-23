@@ -7,6 +7,7 @@ extern char   __BUILD_DATE;
 extern char   __BUILD_NUMBER;
 
 int main(int argc, char** argv) {
+
 	LBM solver(64);
 	int scale = 1;
 	int runs = 200 * scale * scale * scale;

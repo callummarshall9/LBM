@@ -33,7 +33,7 @@ void notify(float fraction, std::chrono::milliseconds time, int runs_left) {
 }
 
 void worker_code() {
-	worker new_worker {};//What a load of sorcery.
+	worker new_worker;//What a load of sorcery.
 	new_worker.do_work(notify);
 }
 

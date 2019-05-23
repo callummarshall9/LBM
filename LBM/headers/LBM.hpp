@@ -32,8 +32,8 @@ private:
 	int scalar_index(int x, int y, int z, int w);
 	void output_array(float *array);
 	//Lattice directions using D3DQ15. assumed speed of sound c_s = 1/sqrt(3).
-	const int direction_size = 15;
-	vector3 directions[15] = {//c_i vectors.
+	static const int direction_size = 15;
+	vector3 directions[direction_size] = {//c_i vectors.
 		vector3(0.0,0.0,0.0),
 		vector3(1.0,0.0,0.0),
 		vector3(-1.0,0.0,0.0),
