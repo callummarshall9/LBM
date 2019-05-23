@@ -7,7 +7,9 @@ extern char   __BUILD_DATE;
 extern char   __BUILD_NUMBER;
 
 int main(int argc, char** argv) {
-
+	std::cout << "Enter grid size: ";
+	int grid_size;
+	std::cin >> grid_size;
 	LBM solver(64);
 	int scale = 1;
 	int runs = 200 * scale * scale * scale;

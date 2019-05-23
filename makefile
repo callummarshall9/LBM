@@ -9,7 +9,7 @@ GUI_OUTPUT=main_gui
 LIBS=`pkg-config gtkmm-3.0 --cflags --libs`
 
 hellomake:
-	$(CC) $(CFLAGS) -I$(shell pwd) cmdline/main.cpp $(LBM_SRC) -o $(CMD_OUTPUT) $(LIBS)
+	$(CC) $(CFLAGS) -I$(shell pwd) cmdline/main.cpp $(LBM_SRC) -o $(CMD_OUTPUT)
 	sh make_buildnum.sh
 
 gui:
