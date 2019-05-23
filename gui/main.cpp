@@ -3,7 +3,7 @@
 #include <gtkmm.h>
 #include <chrono>
 #include <cmath>
-#include <headers/worker.hpp>
+#include <gui/headers/worker.hpp>
 
 Gtk::ProgressBar *progress_bar;
 Gtk::Label* eta;

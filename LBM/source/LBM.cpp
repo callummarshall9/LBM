@@ -1,5 +1,5 @@
-#include "headers/LBM.hpp"
-#include "headers/vector3.hpp"
+#include "LBM/headers/LBM.hpp"
+#include "LBM/headers/vector3.hpp"
 #include <iomanip>
 
 LBM::LBM(int grid_size) {

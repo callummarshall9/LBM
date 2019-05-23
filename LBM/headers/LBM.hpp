@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include "headers/vector3.hpp"
+#include "LBM/headers/vector3.hpp"
 #ifndef LBM_H_FILE
 #define LBM_H_FILE
 

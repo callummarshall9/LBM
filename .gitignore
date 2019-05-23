@@ -30,4 +30,5 @@
 *.exe
 *.out
 *.app
-main
+main_console
+main_gui

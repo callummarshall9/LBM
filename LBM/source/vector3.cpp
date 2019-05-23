@@ -1,4 +1,4 @@
-#include "headers/vector3.hpp"
+#include "LBM/headers/vector3.hpp"
 
 vector3::vector3(float x, float y, float z) {
 	this->x = x;
