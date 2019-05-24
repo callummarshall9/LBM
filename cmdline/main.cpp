@@ -3,21 +3,25 @@
 #include "LBM/headers/LBM.hpp"
 #include "LBM/headers/vector3.hpp"
 
-extern char   __BUILD_DATE;
-extern char   __BUILD_NUMBER;
-
 int main(int argc, char** argv) {
+	std::cout << "Do you want to clean the previous run? (1 - Yes, 0 - No): ";
+	int choice;
+	std::cin >> choice;
+	if(choice == 1) {
+		system("rm -rf output");
+		system("mkdir output");
+	}
 	std::cout << "Enter grid size: ";
 	int grid_size;
 	std::cin >> grid_size;
-	LBM solver(64);
+	LBM solver(grid_size);
 	int scale = 1;
 	int runs = 200 * scale * scale * scale;
 	for(int i = 0; i < runs; i = i + 1) {
 		float percentage = (float)(i+1) / (float)(runs) * 100.0;
 		std::cout << "Saving data - " << (i+1)  << "/" << runs << " (" << percentage << "%)" << std::endl;
 		solver.output_lbm_data("output/" + std::to_string(i) + ".csv");
-		std::cout << "Performing timestep - " << i << "/" << runs << std::endl;
 		solver.perform_timestep();
 	}
+	solver.free_memory();
 }

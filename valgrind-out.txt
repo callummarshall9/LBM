@@ -1,0 +1,164 @@
+==4815== Memcheck, a memory error detector
+==4815== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==4815== Using Valgrind-3.15.0-608cb11914-20190413 and LibVEX; rerun with -h for copyright info
+==4815== Command: ./main_console
+==4815== Parent PID: 2831
+==4815== 
+--4815-- 
+--4815-- Valgrind options:
+--4815--    --leak-check=full
+--4815--    --show-leak-kinds=all
+--4815--    --track-origins=yes
+--4815--    --verbose
+--4815--    --log-file=valgrind-out.txt
+--4815-- Contents of /proc/version:
+--4815--   Linux version 5.0.16-300.fc30.x86_64 (mockbuild@bkernel03.phx2.fedoraproject.org) (gcc version 9.1.1 20190503 (Red Hat 9.1.1-1) (GCC)) #1 SMP Tue May 14 19:33:09 UTC 2019
+--4815-- 
+--4815-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand
+--4815-- Page sizes: currently 4096, max supported 4096
+--4815-- Valgrind library directory: /usr/libexec/valgrind
+--4815-- Reading syms from /home/callummarshall/Documents/Development/Cpp/LBM/main_console
+--4815-- Reading syms from /usr/lib64/ld-2.29.so
+--4815--   Considering /usr/lib/debug/.build-id/66/aa62114e04652217638127c40838aa14061d03.debug ..
+--4815--   .. build-id is valid
+--4815-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+--4815--    object doesn't have a symbol table
+--4815--    object doesn't have a dynamic symbol table
+--4815-- Scheduler: using generic scheduler lock implementation.
+--4815-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+==4815== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-4815-by-callummarshall-on-localhost.localdomain
+==4815== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-4815-by-callummarshall-on-localhost.localdomain
+==4815== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-4815-by-callummarshall-on-localhost.localdomain
+==4815== 
+==4815== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==4815== don't want to do, unless you know exactly what you're doing,
+==4815== or are doing some strange experiment):
+==4815==   /usr/libexec/valgrind/../../bin/vgdb --pid=4815 ...command...
+==4815== 
+==4815== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==4815==   /path/to/gdb ./main_console
+==4815== and then give GDB the following command
+==4815==   target remote | /usr/libexec/valgrind/../../bin/vgdb --pid=4815
+==4815== --pid is optional if only one valgrind process is running
+==4815== 
+--4815-- REDIR: 0x401fe80 (ld-linux-x86-64.so.2:strlen) redirected to 0x580c9e22 (???)
+--4815-- REDIR: 0x401fc50 (ld-linux-x86-64.so.2:index) redirected to 0x580c9e3c (???)
+--4815-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--4815-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+==4815== WARNING: new redirection conflicts with existing -- ignoring it
+--4815--     old: 0x0401fe80 (strlen              ) R-> (0000.0) 0x580c9e22 ???
+--4815--     new: 0x0401fe80 (strlen              ) R-> (2007.0) 0x0483bd00 strlen
+--4815-- REDIR: 0x401c660 (ld-linux-x86-64.so.2:strcmp) redirected to 0x483cc30 (strcmp)
+--4815-- REDIR: 0x40203e0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4840640 (mempcpy)
+--4815-- Reading syms from /usr/lib64/libstdc++.so.6.0.26
+--4815--   Considering /usr/lib/debug/.build-id/3b/2e1aaafd0cb7e1ebd75627d4cde2504c927159.debug ..
+--4815--   .. build-id is valid
+--4815--   Considering /usr/lib/debug/.build-id/3b/../../../../../usr/lib/debug/usr/lib64/../../.dwz/gcc-9.1.1-1.fc30.x86_64 ..
+--4815--   .. build-id is valid
+--4815-- Warning: cross-CU LIMITATION: some inlined fn names
+--4815-- might be shown as UnknownInlinedFun
+--4815-- Reading syms from /usr/lib64/libm-2.29.so
+--4815--   Considering /usr/lib/debug/.build-id/53/91dc97775a6f742348ca29e50212dac1520fd6.debug ..
+--4815--   .. build-id is valid
+--4815-- Reading syms from /usr/lib64/libgcc_s-9-20190503.so.1
+--4815--   Considering /usr/lib/debug/.build-id/e6/60d4e30e163310ed48b0dedd8170decb96837f.debug ..
+--4815--   .. build-id is valid
+--4815--   Considering /usr/lib/debug/.build-id/e6/../../../../../usr/lib/debug/lib64/../.dwz/gcc-9.1.1-1.fc30.x86_64 ..
+--4815--   .. build-id is valid
+--4815-- Reading syms from /usr/lib64/libpthread-2.29.so
+--4815--   Considering /usr/lib/debug/.build-id/af/de9557f2ac2684d992480ffb95f8a804081e04.debug ..
+--4815--   .. build-id is valid
+--4815-- Reading syms from /usr/lib64/libc-2.29.so
+--4815--   Considering /usr/lib/debug/.build-id/b0/3551f716875517bfe7e24dec31147bbb139a2d.debug ..
+--4815--   .. build-id is valid
+--4815-- REDIR: 0x4c70a90 (libc.so.6:memmove) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c6fd10 (libc.so.6:strncpy) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c70dc0 (libc.so.6:strcasecmp) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c6f630 (libc.so.6:strcat) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c6fd70 (libc.so.6:rindex) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c72210 (libc.so.6:rawmemchr) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c8a8f0 (libc.so.6:wmemchr) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c8a350 (libc.so.6:wcscmp) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c70bf0 (libc.so.6:mempcpy) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c70a20 (libc.so.6:bcmp) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c6fca0 (libc.so.6:strncmp) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c6f6e0 (libc.so.6:strcmp) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c70b50 (libc.so.6:memset) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c8a310 (libc.so.6:wcschr) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c6fc00 (libc.so.6:strnlen) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c6f7c0 (libc.so.6:strcspn) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c70e10 (libc.so.6:strncasecmp) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c6f760 (libc.so.6:strcpy) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c70f60 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c8bbe0 (libc.so.6:wcsnlen) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c6fdb0 (libc.so.6:strpbrk) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c6f690 (libc.so.6:index) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c6fbc0 (libc.so.6:strlen) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c76750 (libc.so.6:memrchr) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c70e60 (libc.so.6:strcasecmp_l) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c709e0 (libc.so.6:memchr) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c8a460 (libc.so.6:wcslen) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c70070 (libc.so.6:strspn) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c70d60 (libc.so.6:stpncpy) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c70d00 (libc.so.6:stpcpy) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c72250 (libc.so.6:strchrnul) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4c70eb0 (libc.so.6:strncasecmp_l) redirected to 0x482e1e1 (_vgnU_ifunc_wrapper)
+--4815-- REDIR: 0x4d41db0 (libc.so.6:__strrchr_avx2) redirected to 0x483b6b0 (rindex)
+--4815-- REDIR: 0x4c6bb10 (libc.so.6:malloc) redirected to 0x4838799 (malloc)
+--4815-- REDIR: 0x4d41f80 (libc.so.6:__strlen_avx2) redirected to 0x483bbe0 (strlen)
+--4815-- REDIR: 0x4d3e570 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x483ee30 (bcmp)
+--4815-- REDIR: 0x4d3d480 (libc.so.6:__strcmp_avx2) redirected to 0x483cb30 (strcmp)
+--4815-- REDIR: 0x4d44f70 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4840280 (mempcpy)
+--4815-- REDIR: 0x4915dd0 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4838e14 (operator new(unsigned long))
+==4815== Invalid write of size 4
+==4815==    at 0x403486: LBM::initialise() (LBM.cpp:23)
+==4815==    by 0x403230: LBM::LBM(int) (LBM.cpp:10)
+==4815==    by 0x4024EA: main (main.cpp:20)
+==4815==  Address 0x4dd5e60 is 0 bytes after a block of size 60,000 alloc'd
+==4815==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==4815==    by 0x403219: LBM::LBM(int) (LBM.cpp:9)
+==4815==    by 0x4024EA: main (main.cpp:20)
+==4815== 
+--4815-- REDIR: 0x4d41bc0 (libc.so.6:__strchrnul_avx2) redirected to 0x4840160 (strchrnul)
+--4815-- REDIR: 0x4d44f90 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x483f640 (memmove)
+--4815-- REDIR: 0x4d3dde0 (libc.so.6:__memchr_avx2) redirected to 0x483ccb0 (memchr)
+--4815-- VALGRIND INTERNAL ERROR: Valgrind received a signal 7 (SIGBUS) - exiting
+--4815-- si_code=128;  Faulting address: 0x0;  sp: 0x1008ca5e50
+
+valgrind: the 'impossible' happened:
+   Killed by fatal signal
+
+host stacktrace:
+==4815==    at 0x580514F7: ??? (in /usr/libexec/valgrind/memcheck-amd64-linux)
+==4815==    by 0x58005BF7: ??? (in /usr/libexec/valgrind/memcheck-amd64-linux)
+==4815==    by 0x580A7344: ??? (in /usr/libexec/valgrind/memcheck-amd64-linux)
+==4815==    by 0x580F60D4: ??? (in /usr/libexec/valgrind/memcheck-amd64-linux)
+
+sched status:
+  running_tid=1
+
+Thread 1: status = VgTs_Runnable (lwpid 4815)
+==4815==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==4815==    by 0x4C575AE: __fopen_internal (iofopen.c:65)
+==4815==    by 0x4938363: std::__basic_file<char>::open(char const*, std::_Ios_Openmode, int) (basic_file.cc:240)
+==4815==    by 0x497BE1E: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (fstream.tcc:185)
+==4815==    by 0x497BF66: open (fstream:332)
+==4815==    by 0x497BF66: std::basic_ofstream<char, std::char_traits<char> >::open(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (fstream:962)
+==4815==    by 0x403FFE: LBM::output_lbm_data(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (LBM.cpp:142)
+==4815==    by 0x40260A: main (main.cpp:26)
+client stack range: [0x1FFEFFD000 0x1FFF000FFF] client SP: 0x1FFEFFEF60
+valgrind stack range: [0x1008BA6000 0x1008CA5FFF] top usage: 13048 of 1048576
+
+
+Note: see also the FAQ in the source distribution.
+It contains workarounds to several common problems.
+In particular, if Valgrind aborted or crashed after
+identifying problems in your program, there's a good chance
+that fixing those problems will prevent Valgrind aborting or
+crashing, especially if it happened in m_mallocfree.c.
+
+If that doesn't help, please report this bug to: www.valgrind.org
+
+In the bug report, send all the above text, the valgrind
+version, and what OS and version you are using.  Thanks.
+

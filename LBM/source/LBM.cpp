@@ -4,10 +4,17 @@
 
 LBM::LBM(int grid_size) {
 	this->grid_size = grid_size;
-	this->density_field = (float*)malloc(sizeof(float) * this->grid_size * this->grid_size * this->grid_size);
-	velocity_field.resize(this->grid_size * this->grid_size * this->grid_size);
-	this->equilibrium_distribution = (float*)malloc(sizeof(float) * this->direction_size * this->grid_size * this->grid_size * this->grid_size);
+	int box_flatten_length = grid_size * grid_size * grid_size;
+	int equilibrium_flatten_length = box_flatten_length * this->direction_size;
+	this->density_field = new float[box_flatten_length];
+	velocity_field.resize(box_flatten_length);
+	this->equilibrium_distribution = new float[equilibrium_flatten_length];
 	this->initialise();
+}
+
+void LBM::free_memory() {
+	free(density_field);
+	free(equilibrium_distribution);
 }
 
 void LBM::initialise() {
@@ -20,7 +27,8 @@ void LBM::initialise() {
 				vector3 velocity = this->velocity_field[this->scalar_index(i,j,k)];
 				for(int w = 0; w < this->direction_size; w++) {
 					float dot_product = velocity.dot(this->directions[w]);
-					this->equilibrium_distribution[this->scalar_index(i,j,k,w)] = weights[w] * density * (1.0 + 3.0 * dot_product + 4.5 * dot_product * dot_product - 1.5 * velocity.norm_square());
+					this->equilibrium_distribution[this->scalar_index(i,j,k,w)] =
+						weights[w] * density * (1.0 + 3.0 * dot_product + 4.5 * dot_product * dot_product - 1.5 * velocity.norm_square());
 				}
 			}
 		}
@@ -32,8 +40,8 @@ int LBM::scalar_index(int x, int y, int z) {
 }
 
 int LBM::scalar_index(int x, int y, int z, int w) {
-	return (w * this->direction_size * this->grid_size * this->grid_size) +
-		(z * this->grid_size * this->grid_size) + (y * this->grid_size) + x;
+	int index = x + y * this->grid_size + z * this->grid_size * grid_size + w * grid_size * grid_size * grid_size;
+	return index;
 }
 
 void LBM::output_array(float* array) {
@@ -123,7 +131,8 @@ void LBM::collision() {//Performs the collision step.
 				float density = this->density_field[this->scalar_index(x,y,z)];
 				for(int i = 0; i < this->direction_size; i = i + 1) {
 					float dot_product = velocity.dot(this->directions[i]);
-					this->equilibrium_distribution[this->scalar_index(x,y,z,i)] = weights[i] * density * (1.0 + 3.0 * dot_product + 4.5 * dot_product * dot_product - 1.5 * velocity.norm_square());
+					this->equilibrium_distribution[this->scalar_index(x,y,z,i)] =
+						weights[i] * density * (1.0 + 3.0 * dot_product + 4.5 * dot_product * dot_product - 1.5 * velocity.norm_square());
 				}
 			}
 		}
@@ -139,16 +148,21 @@ void LBM::perform_timestep() {
 
 void LBM::output_lbm_data(std::string filename) {
 	std::ofstream output_stream;
-	output_stream.open(filename, std::ofstream::out | std::ofstream::app);
+  output_stream.open (filename, std::ofstream::out | std::ofstream::app);
+	if(!output_stream.is_open()) {
+		std::cout << "Cannot open filename: " + filename + " for opening." << std::endl;
+		return;
+	}
 	output_stream << "x,y,z,p,u_x,u_y,u_z" << std::endl;
 	output_stream << std::fixed;
 	output_stream << std::setprecision(6);
-	for(int x = 0; x <  this->grid_size; x = x + 1) {
-		for(int y = 0; y <  this->grid_size; y = y + 1) {
-			for(int z = 0; z < this->grid_size; z = z + 1) {
-				float density = this->density_field[this->scalar_index(x,y,z)];
-				vector3 fluid_velocity = this->velocity_field[this->scalar_index(x,y,z)];
-				output_stream << x << "," << y << "," << z << "," << density << "," << (float)fluid_velocity.get_x() << "," << (float)fluid_velocity.get_y() << "," << (float)fluid_velocity.get_z() << std::endl;
+	for(int x = 0; x < grid_size; x++) {
+		for(int y = 0; y < grid_size; y++) {
+			for(int z = 0; z < grid_size; z++) {
+				float density = density_field[this->scalar_index(x,y,z)];
+				vector3 fluid_velocity = velocity_field[this->scalar_index(x,y,z)];
+				output_stream << x << "," << y << "," << z << "," << density << "," <<
+					(float)fluid_velocity.get_x() << "," << (float)fluid_velocity.get_y() << "," << (float)fluid_velocity.get_z() << std::endl;
 			}
 		}
 	}

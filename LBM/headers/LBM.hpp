@@ -12,6 +12,7 @@ class LBM {
 public:
 	void initialise();
 	LBM(int grid_size);
+	void free_memory();
 	void output_density();
 	void output_velocity();
 	void output_test();

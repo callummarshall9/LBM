@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-g -Wall -std=c++11 -pedantic -pthread
+CFLAGS=-g -Wall -std=c++11 -pedantic -pthread -fstack-check -fstack-protector
 LBM_HEADERS=LBM/headers/*.hpp
 LBM_SRC=LBM/source/*.cpp
 CMD_OUTPUT=main_console
@@ -15,6 +15,13 @@ hellomake:
 gui:
 	$(CC) $(CFLAGS) -I$(shell pwd) gui/main.cpp $(GUI_SRC) $(LBM_SRC) -o $(GUI_OUTPUT) $(LIBS)
 	sh make_buildnum.sh
+
 .PHONY: hellomake gui
 clean:
 	rm main_gui main_console
+
+memcheck_cmdline:
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./$(CMD_OUTPUT)
+
+memcheck_gui:
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./$(GUI_OUTPUT)
