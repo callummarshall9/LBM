@@ -8,20 +8,26 @@ int main(int argc, char** argv) {
 	int choice;
 	std::cin >> choice;
 	if(choice == 1) {
-		system("rm -rf output");
-		system("mkdir output");
+		system("rm -rf /home/callummarshall/output");
+		system("mkdir /home/callummarshall/output");
 	}
 	std::cout << "Enter grid size: ";
 	int grid_size;
 	std::cin >> grid_size;
 	LBM solver(grid_size);
+	solver.output_lbm_data("/home/callummarshall/output/0.csv");
 	int scale = 1;
-	int runs = 200 * scale * scale * scale;
+	int runs = 1000 * scale * scale * scale;
 	for(int i = 0; i < runs; i = i + 1) {
-		float percentage = (float)(i+1) / (float)(runs) * 100.0;
-		std::cout << "Saving data - " << (i+1)  << "/" << runs << " (" << percentage << "%)" << std::endl;
-		solver.output_lbm_data("output/" + std::to_string(i) + ".csv");
 		solver.perform_timestep();
+		if((i+1) % 200 == 0) {
+			float percentage = (float)(i+1) / (float)(runs) * 100.0;
+			std::cout << "Saving data - " << (i+1)  << "/" << runs << " (" << percentage << "%)" << std::endl;
+			solver.output_lbm_data("/home/callummarshall/output/" + std::to_string(i+1) + ".csv");
+		}
+
+
 	}
 	solver.free_memory();
+	return 0;
 }
