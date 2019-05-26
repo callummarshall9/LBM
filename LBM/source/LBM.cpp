@@ -19,6 +19,7 @@ LBM::LBM(int grid_size) {
 					double dot_product = (double)velocity_field[scalar_index(i,j,k)].x * (double)directions[w].x + (double)velocity_field[scalar_index(i,j,k)].y * (double)directions[w].y +
 						(double)velocity_field[scalar_index(i,j,k)].z * (double)directions[w].z;
 					double feq = weights[w] * density_field[scalar_index(i,j,k)] * (1.0 + 3.0 * dot_product + 4.5 * dot_product * dot_product - 1.5 * velocity_field[scalar_index(i,j,k)].norm_square());
+					std::cout << weights[w] * density_field[scalar_index(i,j,k)] << std::endl;
 					equilibrium_distribution[scalar_index(i,j,k,w)] = feq;
 				}
 			}
@@ -97,7 +98,7 @@ double* LBM::stream() {
 }
 
 void LBM::collision(double* f) {//Performs the collision step.
-	const double tauinv = 2.0/(6.0*nu+1.0);
+	const double tauinv = 1;
 	const double omtauinv = 1.0-tauinv;     // 1 - 1/tau
 	for(int x = 0; x < grid_size; x++) {
 		for(int y = 0; y < grid_size; y++) {
@@ -118,6 +119,19 @@ void LBM::perform_timestep() {
 	double* f2 = this->stream();
 	compute_density_momentum_moment(f2);
 	collision(f2);
+	for(int i = 0; i < grid_size; i++) {
+		for(int j = 0; j < grid_size; j++) {
+			for(int k = 0; k < grid_size; k++) {
+				for(int w = 0; w < direction_size; w++) {
+					if(f2[scalar_index(i,j,k,w)] != equilibrium_distribution[scalar_index(i,j,k,w)]) {
+						std::cout << "WARNING EQUILIBRIUM DISTRIBUTION HAS CHANGED." << std::endl;
+						return;
+					}
+				}
+
+			}
+		}
+	}
 	delete[] equilibrium_distribution;
 	equilibrium_distribution = f2;
 }
