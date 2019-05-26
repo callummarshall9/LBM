@@ -119,19 +119,6 @@ void LBM::perform_timestep() {
 	double* f2 = this->stream();
 	compute_density_momentum_moment(f2);
 	collision(f2);
-	for(int i = 0; i < grid_size; i++) {
-		for(int j = 0; j < grid_size; j++) {
-			for(int k = 0; k < grid_size; k++) {
-				for(int w = 0; w < direction_size; w++) {
-					if(f2[scalar_index(i,j,k,w)] != equilibrium_distribution[scalar_index(i,j,k,w)]) {
-						std::cout << "WARNING EQUILIBRIUM DISTRIBUTION HAS CHANGED." << std::endl;
-						return;
-					}
-				}
-
-			}
-		}
-	}
 	delete[] equilibrium_distribution;
 	equilibrium_distribution = f2;
 }
