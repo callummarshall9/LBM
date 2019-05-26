@@ -8,8 +8,8 @@ int main(int argc, char** argv) {
 	int choice;
 	std::cin >> choice;
 	if(choice == 1) {
-		system("rm -rf /home/callummarshall/output");
-		system("mkdir /home/callummarshall/output");
+		system("rm -rf output");
+		system("mkdir output");
 	}
 	std::cout << "Enter grid size: ";
 	int grid_size;
