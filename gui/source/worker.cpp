@@ -1,7 +1,7 @@
-#include <gui/headers/worker.hpp>
+#include "worker.hpp"
 #include <sstream>
 #include <chrono>
-#include <LBM/headers/LBM.hpp>
+#include "headers/LBM.hpp"
 
 worker::worker() :
   thread_mutex(),

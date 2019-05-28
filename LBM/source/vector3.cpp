@@ -1,4 +1,4 @@
-#include "LBM/headers/vector3.hpp"
+#include "vector3.hpp"
 
 template<class myType>
 vector3<myType>::vector3(myType x, myType y, myType z) : x(x), y(y), z(z) {

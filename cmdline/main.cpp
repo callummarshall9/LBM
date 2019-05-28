@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <iostream>
-#include "LBM/headers/LBM.hpp"
-#include "LBM/headers/vector3.hpp"
+#include "LBM.hpp"
+#include "vector3.hpp"
+
 
 int main(int argc, char** argv) {
 	std::cout << "Do you want to clean the previous run? (1 - Yes, 0 - No): ";
@@ -25,8 +26,6 @@ int main(int argc, char** argv) {
 			std::cout << "Saving data - " << (i+1)  << "/" << runs << " (" << percentage << "%)" << std::endl;
 			solver.output_lbm_data("output/" + std::to_string(i+1) + ".csv");
 		}
-
-
 	}
 	solver.free_memory();
 	return 0;

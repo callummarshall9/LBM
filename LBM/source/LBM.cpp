@@ -1,25 +1,23 @@
-#include "LBM/headers/LBM.hpp"
-#include "LBM/source/vector3.cpp"
+#include "LBM.hpp"
+#include "vector3.cpp"
 #include <iomanip>
 
-LBM::LBM(int grid_size) {
-	this->grid_size = grid_size;
-	int box_flatten_length = grid_size * grid_size * grid_size;
+LBM::LBM(int grid_size) : NX(grid_size),NY(grid_size),NZ(grid_size) {
+	int box_flatten_length = NX * NY * NZ;
 	int equilibrium_flatten_length = box_flatten_length * direction_size;
 	density_field = new double[box_flatten_length];
 	velocity_field = new vector3<double>[box_flatten_length];
 	equilibrium_distribution = new double[equilibrium_flatten_length];
-	for(int i = 0; i < grid_size * grid_size * grid_size; i++) {
+	for(int i = 0; i < NX * NY * NZ; i++) {
 		density_field[i] = 1;
 	}
-	for(int i = 0; i < this->grid_size; i++) {
-		for(int j = 0; j < this->grid_size; j++) {
-			for(int k = 0; k < this->grid_size; k++) {
-				for(int w = 0; w < this->direction_size; w++) {
+	for(int i = 0; i < NX; i++) {
+		for(int j = 0; j < NY; j++) {
+			for(int k = 0; k < NZ; k++) {
+				for(int w = 0; w < direction_size; w++) {
 					double dot_product = (double)velocity_field[scalar_index(i,j,k)].x * (double)directions[w].x + (double)velocity_field[scalar_index(i,j,k)].y * (double)directions[w].y +
 						(double)velocity_field[scalar_index(i,j,k)].z * (double)directions[w].z;
 					double feq = weights[w] * density_field[scalar_index(i,j,k)] * (1.0 + 3.0 * dot_product + 4.5 * dot_product * dot_product - 1.5 * velocity_field[scalar_index(i,j,k)].norm_square());
-					std::cout << weights[w] * density_field[scalar_index(i,j,k)] << std::endl;
 					equilibrium_distribution[scalar_index(i,j,k,w)] = feq;
 				}
 			}
@@ -33,19 +31,19 @@ void LBM::free_memory() {
 }
 
 int LBM::scalar_index(int x, int y, int z) {
-	return (z * this->grid_size * this->grid_size) + (y * this->grid_size) + x;
+	return (z * NX * NY) + (y * NX) + x;
 }
 
 int LBM::scalar_index(int x, int y, int z, int w) {
-	int index = x + y * this->grid_size + z * this->grid_size * grid_size + w * grid_size * grid_size * grid_size;
+	int index = x + y * NX + z * NX * NY + w * NX * NY * NZ;
 	return index;
 }
 
 void LBM::output_array(double* array) {
 	std::cout << "x,y,z value" << std::endl;
-	for(int i = 0; i < this->grid_size; i++) {
-		for(int j = 0; j < this->grid_size; j++) {
-			for(int k = 0; k < this->grid_size; k++) {
+	for(int i = 0; i < NX; i++) {
+		for(int j = 0; j < NY; j++) {
+			for(int k = 0; k < NZ; k++) {
 				std::cout << i << "," << j << "," << k << ": " << array[this->scalar_index(i,j,k)] << std::endl;
 			}
 		}
@@ -60,9 +58,9 @@ void LBM::output_velocity() {
 }
 
 void LBM::compute_density_momentum_moment(double* f) {
-	for(int i = 0; i < grid_size; i++) {
-		for(int j = 0; j < grid_size; j++) {
-			for(int k = 0; k < grid_size; k++) {
+	for(int i = 0; i < NX; i++) {
+		for(int j = 0; j < NY; j++) {
+			for(int k = 0; k < NZ; k++) {
 				double new_density = 0;
 				vector3<double> u;
 				for(int w = 0; w < direction_size; w++) {
@@ -81,14 +79,14 @@ void LBM::compute_density_momentum_moment(double* f) {
 }
 
 double* LBM::stream() {
-	double* f2 = new double[grid_size * grid_size * grid_size * direction_size];
-	for(int x = 0; x < grid_size; x++) {
-		for(int y = 0; y < grid_size; y++) {
-			for(int z = 0; z < grid_size; z++) {
+	double* f2 = new double[NX * NY * NZ * direction_size];
+	for(int x = 0; x < NX; x++) {
+		for(int y = 0; y < NY; y++) {
+			for(int z = 0; z < NZ; z++) {
 				for(int i = 0; i < direction_size; i++) {
-					int xmd = (grid_size + x - (int)directions[i].x) % this->grid_size;
-					int ymd = (grid_size + y - (int)directions[i].y) % this->grid_size;
-					int zmd = (grid_size + z - (int)directions[i].z) % this->grid_size;
+					int xmd = (NX + x - (int)directions[i].x) % NX;
+					int ymd = (NY + y - (int)directions[i].y) % NY;
+					int zmd = (NZ + z - (int)directions[i].z) % NZ;
 					f2[this->scalar_index(x,y,z,i)] = equilibrium_distribution[this->scalar_index(xmd,ymd,zmd,i)];
 				}
 			}
@@ -100,9 +98,9 @@ double* LBM::stream() {
 void LBM::collision(double* f) {//Performs the collision step.
 	const double tauinv = 1;
 	const double omtauinv = 1.0-tauinv;     // 1 - 1/tau
-	for(int x = 0; x < grid_size; x++) {
-		for(int y = 0; y < grid_size; y++) {
-			for(int z = 0; z < grid_size; z++) {
+	for(int x = 0; x < NX; x++) {
+		for(int y = 0; y < NY; y++) {
+			for(int z = 0; z < NZ; z++) {
 				for(int i = 0; i < direction_size; i++) {
 					double dot_product = (double)velocity_field[scalar_index(x,y,z)].x * (double)directions[i].x + (double)velocity_field[scalar_index(x,y,z)].y * (double)directions[i].y +
 						(double)velocity_field[scalar_index(x,y,z)].z * (double)directions[i].z;
@@ -125,32 +123,17 @@ void LBM::perform_timestep() {
 
 void LBM::output_lbm_data(std::string filename) {
 	std::ofstream output_stream;
-	std::ofstream f_stream;
   output_stream.open (filename, std::ofstream::out | std::ofstream::app);
-	f_stream.open(filename+"_f.csv", std::ofstream::out | std::ofstream::app);
-	if(!output_stream.is_open()) {
-		std::cout << "Cannot open filename: " + filename + " for opening." << std::endl;
-		return;
-	}
-	if(!f_stream.is_open()) {
-		std::cout << "Unable to open file";
-		return;
-	}
 	output_stream << "p,u_x,u_y,u_z" << '\n';
-	f_stream << "x,y,z,value" << '\n';
-	for(int x = 0; x < grid_size; x++) {
-		for(int y = 0; y < grid_size; y++) {
-			for(int z = 0; z < grid_size; z++) {
+	for(int x = 0; x < NX; x++) {
+		for(int y = 0; y < NY; y++) {
+			for(int z = 0; z < NZ; z++) {
 				output_stream << density_field[this->scalar_index(x,y,z)] << "," <<
 					velocity_field[this->scalar_index(x,y,z)].x << "," <<
 					velocity_field[this->scalar_index(x,y,z)].y << "," <<
 					velocity_field[this->scalar_index(x,y,z)].z << '\n';
-					for(int w = 0; w < direction_size; w++) {
-						f_stream << x << ","<<y<<","<<z<<","<<equilibrium_distribution[scalar_index(x,y,z,w)] << '\n';
-					}
 			}
 		}
 	}
 	output_stream.close();
-	f_stream.close();
 }

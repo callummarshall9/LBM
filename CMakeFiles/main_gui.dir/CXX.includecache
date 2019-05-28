@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/callummarshall/Documents/Development/Cpp/LBM/LBM/source/LBM.cpp
+LBM.hpp
+/home/callummarshall/Documents/Development/Cpp/LBM/LBM/source/LBM.hpp
+vector3.cpp
+/home/callummarshall/Documents/Development/Cpp/LBM/LBM/source/vector3.cpp
+iomanip
+-
+
+/home/callummarshall/Documents/Development/Cpp/LBM/LBM/source/vector3.cpp
+vector3.hpp
+/home/callummarshall/Documents/Development/Cpp/LBM/LBM/source/vector3.hpp
+
+LBM/headers/LBM.hpp
+stdio.h
+-
+iostream
+-
+string
+-
+fstream
+-
+vector3.hpp
+LBM/headers/vector3.hpp
+
+LBM/headers/vector3.hpp
+

@@ -1,0 +1,4 @@
+{
+  grid_size: [32,32,32],
+  save_every: 200
+}

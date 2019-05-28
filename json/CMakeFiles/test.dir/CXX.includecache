@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/callummarshall/Documents/Development/Cpp/LBM/json/json.hh
+json_st.hh
+/home/callummarshall/Documents/Development/Cpp/LBM/json/json_st.hh
+json.tab.hh
+/home/callummarshall/Documents/Development/Cpp/LBM/json/json.tab.hh
+
+/home/callummarshall/Documents/Development/Cpp/LBM/json/json.tab.hh
+json_st.hh
+/home/callummarshall/Documents/Development/Cpp/LBM/json/json_st.hh
+
+/home/callummarshall/Documents/Development/Cpp/LBM/json/json_st.hh
+iostream
+-
+map
+-
+vector
+-
+stack
+-
+
+/home/callummarshall/Documents/Development/Cpp/LBM/json/test.cc
+iostream
+-
+json.hh
+/home/callummarshall/Documents/Development/Cpp/LBM/json/json.hh
+

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include "LBM/headers/vector3.hpp"
+#include "vector3.hpp"
 #ifndef LBM_H_FILE
 #define LBM_H_FILE
 
@@ -20,11 +20,13 @@ public:
 	void perform_timestep();//Delta t = 1 lattice unit.
 	void output_lbm_data(std::string filename);
 private:
+	int NX;
+	int NY;
+	int NZ;
 	const double nu = 1.0/6.0;
 	double* density_field;
 	vector3<double>* velocity_field;
 	double* equilibrium_distribution;
-	int grid_size;
 	int scalar_index(int x, int y, int z);
 	int scalar_index(int x, int y, int z, int w);
 	void output_array(double *array);

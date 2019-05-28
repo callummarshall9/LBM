@@ -3,7 +3,7 @@
 #include <gtkmm.h>
 #include <chrono>
 #include <cmath>
-#include <gui/headers/worker.hpp>
+#include "headers/worker.hpp"
 
 Gtk::ProgressBar *progress_bar;
 Gtk::Label* eta;
@@ -27,7 +27,6 @@ void notify(float fraction, std::chrono::milliseconds time, int runs_left) {
 		eta->set_text("Estimated time left: " + std::to_string(minutes) + " minutes, " + std::to_string(seconds) + " seconds");
 	}
 	if(fraction == 1.0) {
-		free(worker_thread);
 		app->quit();
 	}
 }
