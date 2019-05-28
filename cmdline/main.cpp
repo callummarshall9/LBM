@@ -12,10 +12,10 @@ int main(int argc, char** argv) {
 		system("rm -rf output");
 		system("mkdir output");
 	}
-	std::cout << "Enter grid size: ";
-	int grid_size;
-	std::cin >> grid_size;
-	LBM solver(grid_size);
+	std::cout << "Enter x,y,z: ";
+	int x, y, z;
+	std::cin >> x >> y >> z;
+	LBM solver(x,y,z);
 	solver.output_lbm_data("output/0.csv");
 	int scale = 1;
 	int runs = 1000 * scale * scale * scale;

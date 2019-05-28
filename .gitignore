@@ -32,3 +32,5 @@
 *.app
 main_console
 main_gui
+CMakeFiles
+CMakeCache.txt

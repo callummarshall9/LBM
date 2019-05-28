@@ -10,6 +10,7 @@ class LBM {
 
 public:
 	LBM(int grid_size);
+	LBM(int nx, int ny, int nz);
 	void free_memory();
 	void output_density();
 	void output_velocity();
@@ -30,6 +31,7 @@ private:
 	int scalar_index(int x, int y, int z);
 	int scalar_index(int x, int y, int z, int w);
 	void output_array(double *array);
+	void initialise();
 	//Lattice directions using D3DQ15. assumed speed of sound c_s = 1/sqrt(3).
 	static const int direction_size = 15;
 	vector3<int> directions[direction_size] = {//c_i vectors.

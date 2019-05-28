@@ -3,6 +3,14 @@
 #include <iomanip>
 
 LBM::LBM(int grid_size) : NX(grid_size),NY(grid_size),NZ(grid_size) {
+	initialise();
+}
+
+LBM::LBM(int nx, int ny, int nz) : NX(nx), NY(ny), NZ(nz) {
+	 initialise();
+}
+
+void LBM::initialise() {
 	int box_flatten_length = NX * NY * NZ;
 	int equilibrium_flatten_length = box_flatten_length * direction_size;
 	density_field = new double[box_flatten_length];

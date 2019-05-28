@@ -18,6 +18,16 @@ iomanip
 vector3.hpp
 /home/callummarshall/Documents/Development/Cpp/LBM/LBM/source/vector3.hpp
 
+/home/callummarshall/Documents/Development/Cpp/LBM/gui/source/worker.cpp
+worker.hpp
+/home/callummarshall/Documents/Development/Cpp/LBM/gui/source/worker.hpp
+sstream
+-
+chrono
+-
+headers/LBM.hpp
+/home/callummarshall/Documents/Development/Cpp/LBM/gui/source/headers/LBM.hpp
+
 LBM/headers/LBM.hpp
 stdio.h
 -
@@ -31,4 +41,12 @@ vector3.hpp
 LBM/headers/vector3.hpp
 
 LBM/headers/vector3.hpp
+
+gui/headers/worker.hpp
+thread
+-
+mutex
+-
+chrono
+-
 
