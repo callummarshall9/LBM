@@ -1,1 +1,0 @@
-/usr/bin/c++    -rdynamic CMakeFiles/main.dir/gui/main.cpp.o CMakeFiles/main.dir/gui/source/worker.cpp.o  -o main 
