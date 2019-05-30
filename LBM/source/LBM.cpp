@@ -25,6 +25,7 @@ void LBM::initialise() {
 				for(int w = 0; w < direction_size; w++) {
 					double dot_product = (double)velocity_field[scalar_index(i,j,k)].x * (double)directions[w].x + (double)velocity_field[scalar_index(i,j,k)].y * (double)directions[w].y +
 						(double)velocity_field[scalar_index(i,j,k)].z * (double)directions[w].z;
+						//Equation 3.4 with c_s^2 = 1/3
 					double feq = weights[w] * density_field[scalar_index(i,j,k)] * (1.0 + 3.0 * dot_product + 4.5 * dot_product * dot_product - 1.5 * velocity_field[scalar_index(i,j,k)].norm_square());
 					equilibrium_distribution[scalar_index(i,j,k,w)] = feq;
 				}
@@ -69,6 +70,7 @@ void LBM::compute_density_momentum_moment(double* f) {
 	for(int i = 0; i < NX; i++) {
 		for(int j = 0; j < NY; j++) {
 			for(int k = 0; k < NZ; k++) {
+				//Equation 3.1
 				double new_density = 0;
 				vector3<double> u;
 				for(int w = 0; w < direction_size; w++) {
@@ -95,6 +97,7 @@ double* LBM::stream() {
 					int xmd = (NX + x - (int)directions[i].x) % NX;
 					int ymd = (NY + y - (int)directions[i].y) % NY;
 					int zmd = (NZ + z - (int)directions[i].z) % NZ;
+					//Equation 3.10 with periodic boundary conditions.
 					f2[this->scalar_index(x,y,z,i)] = equilibrium_distribution[this->scalar_index(xmd,ymd,zmd,i)];
 				}
 			}
@@ -114,6 +117,7 @@ void LBM::collision(double* f) {//Performs the collision step.
 						(double)velocity_field[scalar_index(x,y,z)].z * (double)directions[i].z;
 					double norm_square = (double)velocity_field[scalar_index(x,y,z)].norm_square();
 					double feq = (double)weights[i] * (double)density_field[scalar_index(x,y,z)] * (1.0 + 3.0 * dot_product + 4.5 * dot_product * dot_product - 1.5 * norm_square);
+					//Equation 3.9
 					f[scalar_index(x,y,z,i)] = omtauinv * equilibrium_distribution[scalar_index(x,y,z,i)] + tauinv * feq;
 				}
 			}

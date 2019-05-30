@@ -30,7 +30,7 @@
 *.exe
 *.out
 *.app
-main_console
+main_cmdline
 main_gui
 CMakeFiles
 CMakeCache.txt

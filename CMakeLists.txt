@@ -1,27 +1,13 @@
 cmake_minimum_required (VERSION 2.6)
-include_directories("LBM")
-add_subdirectory(LBM)
-include_directories("LBM/headers")
-add_subdirectory(LBM/headers)
-project (cmdline_LBM)
-add_executable(main_cmdline LBM/source/LBM.cpp LBM/source/vector3.cpp cmdline/main.cpp)
-
-project(gui_LBM)
-find_package(PkgConfig)
-find_package (Threads)
-pkg_check_modules(GTKMM gtkmm-3.0)
-
-link_directories(
-    ${GTKMM_LIBRARY_DIRS}  )
-
-include_directories(
-  ${GTKMM_INCLUDE_DIRS} "LBM" "LBM/headers" "gui/headers" )
-add_executable(main_gui)
-target_sources(main_gui
+project(cmdline_LBM)
+include_directories("${CMAKE_SOURCE_DIR}/LBM" "${CMAKE_SOURCE_DIR}/LBM/headers" "${CMAKE_SOURCE_DIR}/rapidjson")
+add_executable(main_cmdline ${CMAKE_SOURCE_DIR}/LBM/source/LBM.cpp ${CMAKE_SOURCE_DIR}/LBM/source/vector3.cpp ${CMAKE_SOURCE_DIR}/cmdline/main.cpp)
+target_sources(main_cmdline
 PRIVATE
-  gui/main.cpp
-  LBM/source/LBM.cpp
-  LBM/source/vector3.cpp
-  gui/source/worker.cpp
+  ${CMAKE_SOURCE_DIR}/LBM/source/LBM.cpp
+  ${CMAKE_SOURCE_DIR}/LBM/source/vector3.cpp
+  ${CMAKE_SOURCE_DIR}/rapidjson/document.h
+  ${CMAKE_SOURCE_DIR}/rapidjson/writer.h
+  ${CMAKE_SOURCE_DIR}/rapidjson/stringbuffer.h
 )
-target_link_libraries(main_gui Threads::Threads ${GTKMM_LIBRARIES})
+target_link_libraries(main_cmdline)

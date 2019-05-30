@@ -1,8 +1,14 @@
 #include <stdio.h>
 #include <iostream>
+#include <fstream>
+#include <streambuf>
 #include "LBM.hpp"
 #include "vector3.hpp"
+#include "document.h"
+#include "writer.h"
+#include "stringbuffer.h"
 
+using namespace rapidjson;
 
 int main(int argc, char** argv) {
 	std::cout << "Do you want to clean the previous run? (1 - Yes, 0 - No): ";
@@ -12,10 +18,19 @@ int main(int argc, char** argv) {
 		system("rm -rf output");
 		system("mkdir output");
 	}
-	std::cout << "Enter x,y,z: ";
-	int x, y, z;
-	std::cin >> x >> y >> z;
-	LBM solver(x,y,z);
+	std::ifstream t("options.json");
+	std::string str((std::istreambuf_iterator<char>(t)),
+	                 std::istreambuf_iterator<char>());
+	rapidjson::Document d;
+	d.Parse(str.c_str());
+	Value& save_every_value = d["save_every"];
+	int save_every = save_every_value.GetInt();
+	std::cout << save_every << std::endl;
+	auto grid_size = d["grid_size"].GetArray();
+	int NX = grid_size[0].GetInt();
+	int NY = grid_size[1].GetInt();
+	int NZ = grid_size[2].GetInt();
+	LBM solver(NX,NY,NZ);
 	solver.output_lbm_data("output/0.csv");
 	int scale = 1;
 	int runs = 1000 * scale * scale * scale;
