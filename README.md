@@ -17,8 +17,11 @@ Implemeted using The Lattice Boltzmann Method Principles and Practice. ISBN: 978
 
 # To build
 
-To build the cmdline version simply cd into the cmdline directory and run make
-To build the gui version simply cd into the gui directory and run make
+To build. Clone repo. Then
+mkdir build
+cd built
+cmake ..
+make
 
 # Projects used in this
 - RapidJSON
