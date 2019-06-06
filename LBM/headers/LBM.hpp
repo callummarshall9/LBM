@@ -9,36 +9,38 @@
 class LBM {
 
 public:
-	LBM(int grid_size);
-	LBM(int nx, int ny, int nz);
-	void free_memory();
+	LBM(int grid_size, std::string velocity_set, double c_s);
+	LBM(int nx, int ny, int nz, std::string velocity_set, double c_s);
+	~LBM();
+	void set_velocity(int x_field, int y_field, int z_field, double u_x, double u_y, double u_z);//Set velocity at position in velocity field.
+	void set_density(int x_field, int y_field, int z_field, double density);//Set density at position in density field.
 	void output_density();
 	void output_velocity();
 	void output_test();
-	void compute_density_momentum_moment(double *f);
-	double* stream();//Stream the current equilibrium distribution to the next distribution.
-	void collision(double *f);//Perform the collision step. Assumes delta t / tau = 1.
+	void compute_density_momentum_moment();
+	void stream();//Stream the current equilibrium distribution to the next distribution.
+	void collision();//Perform the collision step. Assumes delta t / tau = 1.
 	void perform_timestep();//Delta t = 1 lattice unit.
-	void output_lbm_data(std::string filename);
+	void output_lbm_data(std::string filename, bool header=true);
 private:
 	int NX;
 	int NY;
 	int NZ;
+	double c_s;
 	const double nu = 1.0/6.0;
 	double* density_field;
 	vector3<double>* velocity_field;
+	double* previous_equilibrium_distribution;
 	double* equilibrium_distribution;
 	int scalar_index(int x, int y, int z);
 	int scalar_index(int x, int y, int z, int w);
 	void output_array(double *array);
+	void set_velocity_set(std::string velocity_set);//Used to internally generate velocity_set.
 	void initialise();
 	//Lattice directions using D3DQ15. assumed speed of sound c_s = 1/sqrt(3).
-	static const int direction_size = 15;
-	vector3<int> directions[direction_size] = {//c_i vectors.
-		{0,0,0},{1,0,0},{-1,0,0},{0,1,0},{0,-1,0},{0,0,1},{0,0,-1},{1,1,1},{-1,-1,-1},{1,1,-1},{-1,-1,1},{1,-1,1},
-		{-1,1,-1},{-1,1,1},{1,-1,-1}
-	};//////////////////////1			2		3		4			5			6		7		8			9		10		11		12		13		14		15
-	double weights[15] = { 2.0/9.0, 1.0/9.0, 1.0/9.0, 1.0/9.0, 1.0/9.0, 1.0/9.0, 1.0/9.0,1.0/72.0, 1.0/72.0, 1.0/72.0, 1.0/72.0, 1.0/72.0, 1.0/72.0, 1.0/72.0, 1.0/72.0  };
+	int direction_size = 15;
+	vector3<int>* directions;
+	double* weights;
 	//This will result in a change in the equlibrium function which will be reflected below.
 };
 
