@@ -21,7 +21,10 @@ inline bool file_exists (const std::string& name) {
 }
 
 int main(int argc, char** argv) {
-
+  if(file_exists("options.json") == false) {
+    std::cout << "Please ensure that options.json exists. If not, it can be obtained from root directory of GitHub repo." << std::endl;
+    return -1;
+  }
 	std::cout << "Do you want to clean the previous run? (1 - Yes, 0 - No): ";
 	int choice;
 	std::cin >> choice;
@@ -29,6 +32,7 @@ int main(int argc, char** argv) {
 		system("rm -rf output");
 		system("mkdir output");
 	}
+
 	std::ifstream t("options.json");
 	std::string str((std::istreambuf_iterator<char>(t)),
 	                 std::istreambuf_iterator<char>());
