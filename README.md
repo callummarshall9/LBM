@@ -18,9 +18,9 @@ Implemeted using The Lattice Boltzmann Method Principles and Practice. ISBN: 978
 # To build
 
 To build. Clone repo. Then
-mkdir build
-cd built
-cmake ..
+mkdir build \
+cd build \
+cmake .. \
 make
 
 # Projects used in this
