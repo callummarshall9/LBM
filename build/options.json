@@ -2,5 +2,5 @@
   "grid_size": [32,32,32],
   "save_every": 200,
   "c_s": 0.577350269,
-  "velocity_set": "D3Q15"
+  "velocity_set": "D3Q27"
 }
