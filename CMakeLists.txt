@@ -1,4 +1,5 @@
 cmake_minimum_required (VERSION 2.6)
+set(CMAKE_CXX_COMPILER g++)
 project(cmdline_LBM)
 include_directories("${CMAKE_SOURCE_DIR}/LBM" "${CMAKE_SOURCE_DIR}/LBM/headers" "${CMAKE_SOURCE_DIR}/cmdline/rapidjson" "${CMAKE_SOURCE_DIR}/cmdline/fast-cpp-csv-parser")
 find_package (Threads)
