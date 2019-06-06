@@ -20,6 +20,10 @@ Implemeted using The Lattice Boltzmann Method Principles and Practice. ISBN: 978
 To build the cmdline version simply cd into the cmdline directory and run make
 To build the gui version simply cd into the gui directory and run make
 
-# GUI dependencies
+# Projects used in this
+- RapidJSON
+- fast-cpp-csv-parser (https://github.com/ben-strasser/fast-cpp-csv-parser)
 
-- gtkmm >= 3.0
+# To visualise
+Run the simulation, then once it has ran. Run the visualise MATLAB script and it will then generate figure images and interactive figures in MATLAB.
+
