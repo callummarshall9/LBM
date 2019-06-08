@@ -2,12 +2,12 @@
 #include "vector3.cpp"
 #include <iomanip>
 
-LBM::LBM(int grid_size, std::string velocity_set, double m_c_s) : NX(grid_size),NY(grid_size),NZ(grid_size), c_s(m_c_s) {
+LBM::LBM(int grid_size, std::string velocity_set, double m_c_s, double m_nu, double m_tau) : NX(grid_size),NY(grid_size),NZ(grid_size), c_s(m_c_s), nu(m_nu), tau(m_tau) {
 	set_velocity_set(velocity_set);
 	initialise();
 }
 
-LBM::LBM(int nx, int ny, int nz, std::string velocity_set, double m_c_s) : NX(nx), NY(ny), NZ(nz), c_s(m_c_s) {
+LBM::LBM(int nx, int ny, int nz, std::string velocity_set, double m_c_s, double m_nu, double m_tau) : NX(nx), NY(ny), NZ(nz), c_s(m_c_s), nu(m_nu), tau(m_tau) {
 	set_velocity_set(velocity_set);
 	initialise();
 }
@@ -139,7 +139,7 @@ void LBM::stream() {
 }
 
 void LBM::collision() {//Performs the collision step.
-	const double tauinv = 1;
+	const double tauinv = 1.0 / tau;
 	const double omtauinv = 1.0-tauinv;     // 1 - 1/tau
 	for(int x = 0; x < NX; x++) {
 		for(int y = 0; y < NY; y++) {

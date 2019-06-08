@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include "LBM.hpp"
 #include "vector3.hpp"
+//RapidJSON files.
 #include "document.h"
 #include "writer.h"
 #include "stringbuffer.h"
@@ -21,7 +22,7 @@ inline bool file_exists (const std::string& name) {
 }
 
 int main(int argc, char** argv) {
-  if(file_exists("options.json") == false) {
+  if(!file_exists("options.json")) {
     std::cout << "Please ensure that options.json exists. If not, it can be obtained from root directory of GitHub repo." << std::endl;
     return -1;
   }
@@ -49,6 +50,12 @@ int main(int argc, char** argv) {
 	Value& m_c_s = d["c_s"];
 	double c_s = m_c_s.GetDouble();
 	std::cout << "c_s (Speed of sound): " << c_s << std::endl;
+	Value& m_nu = d["nu"];
+	double nu = m_nu.GetDouble();
+	std::cout << "nu: " << nu << std::endl;
+	Value& m_tau = d["tau"];
+	double tau = m_tau.GetDouble();
+	std::cout << "tau: " << tau << std::endl;
 	Value& m_velocity_set = d["velocity_set"];
 	std::string velocity_set = m_velocity_set.GetString();
 	if(velocity_set != "D3Q15" && velocity_set != "D3Q27") {
@@ -57,7 +64,7 @@ int main(int argc, char** argv) {
 	}
 	std::cout << "Velocity set: " << velocity_set << std::endl;
 
-	LBM *solver = new LBM(NX,NY,NZ, velocity_set, c_s);
+	LBM *solver = new LBM(NX,NY,NZ, velocity_set, c_s, nu, tau);
 	for(int i = 0; i < argc; i++) {
 		if(std::string(argv[i]) == "generate_ic") {
 			solver->output_lbm_data("ic.csv", true);

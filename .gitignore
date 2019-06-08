@@ -36,3 +36,5 @@ CMakeFiles
 CMakeCache.txt
 headers/CMakeFiles
 build
+cmake-build-debug
+.idea
