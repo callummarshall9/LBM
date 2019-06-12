@@ -50,9 +50,6 @@ int main(int argc, char** argv) {
 	Value& m_c_s = d["c_s"];
 	double c_s = m_c_s.GetDouble();
 	std::cout << "c_s (Speed of sound): " << c_s << std::endl;
-	Value& m_nu = d["nu"];
-	double nu = m_nu.GetDouble();
-	std::cout << "nu: " << nu << std::endl;
 	Value& m_tau = d["tau"];
 	double tau = m_tau.GetDouble();
 	std::cout << "tau: " << tau << std::endl;
@@ -64,7 +61,7 @@ int main(int argc, char** argv) {
 	}
 	std::cout << "Velocity set: " << velocity_set << std::endl;
 
-	LBM *solver = new LBM(NX,NY,NZ, velocity_set, c_s, nu, tau);
+	LBM *solver = new LBM(NX,NY,NZ, velocity_set, c_s, tau);
 	for(int i = 0; i < argc; i++) {
 		if(std::string(argv[i]) == "generate_ic") {
 			solver->output_lbm_data("ic.csv", true);

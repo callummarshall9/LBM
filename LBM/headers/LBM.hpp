@@ -9,8 +9,8 @@
 class LBM {
 
 public:
-	LBM(int grid_size, std::string velocity_set, double c_s, double nu, double tau);
-	LBM(int nx, int ny, int nz, std::string velocity_set, double c_s, double nu, double tau);
+	LBM(int grid_size, std::string velocity_set, double c_s, double tau);
+	LBM(int nx, int ny, int nz, std::string velocity_set, double c_s, double tau);
 	~LBM();
 	void set_velocity(int x_field, int y_field, int z_field, double u_x, double u_y, double u_z);//Set velocity at position in velocity field.
 	void set_density(int x_field, int y_field, int z_field, double density);//Set density at position in density field.

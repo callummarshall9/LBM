@@ -2,12 +2,12 @@
 #include "vector3.cpp"
 #include <iomanip>
 
-LBM::LBM(int grid_size, std::string velocity_set, double m_c_s, double m_nu, double m_tau) : NX(grid_size),NY(grid_size),NZ(grid_size), c_s(m_c_s), nu(m_nu), tau(m_tau) {
+LBM::LBM(int grid_size, std::string velocity_set, double m_c_s, double m_tau) : NX(grid_size),NY(grid_size),NZ(grid_size), c_s(m_c_s), tau(m_tau) {
 	set_velocity_set(velocity_set);
 	initialise();
 }
 
-LBM::LBM(int nx, int ny, int nz, std::string velocity_set, double m_c_s, double m_nu, double m_tau) : NX(nx), NY(ny), NZ(nz), c_s(m_c_s), nu(m_nu), tau(m_tau) {
+LBM::LBM(int nx, int ny, int nz, std::string velocity_set, double m_c_s, double m_tau) : NX(nx), NY(ny), NZ(nz), c_s(m_c_s), tau(m_tau) {
 	set_velocity_set(velocity_set);
 	initialise();
 }
@@ -52,8 +52,8 @@ void LBM::set_velocity_set(std::string velocity_set) {
 		weights = new double[27] {8.0/27.0,2.0/27.0,2.0/27.0,2.0/27.0,
 			2.0/27.0,2.0/27.0,2.0/27.0, 1.0/54.0,1.0/54.0,1.0/54.0
 		,1.0/54.0,1.0/54.0,1.0/54.0,1.0/54.0,1.0/54.0,1.0/54.0,
-	1.0/54.0,1.0/54.0,1.0/54.0, 1.0/216.0, 1.0/216.0, 1.0/216.0, 1.0/216.0
-, 1.0/216.0, 1.0/216.0, 1.0/216.0, 1.0/216.0};
+	    1.0/54.0,1.0/54.0,1.0/54.0, 1.0/216.0, 1.0/216.0, 1.0/216.0, 1.0/216.0
+        ,1.0/216.0, 1.0/216.0, 1.0/216.0, 1.0/216.0};
 	}
 }
 
