@@ -167,11 +167,6 @@ void LBM::stream() {
                         int zmd = (NZ + z - (int)directions[i].z) % NZ;
                         particle_distributions[scalar_index(x,y,z,i)] = previous_particle_distributions[scalar_index(xmd,ymd,zmd,i)];
                         //Equation 3.10 with periodic boundary conditions.
-                    } else if(boundary_condition == "le_shear") {
-                        //Since LE-Boundary is between the y boundaries, enforce periodicity between the y plates.
-                        int xmd = (NX + x - (int)directions[i].x) % NX;
-                        int zmd = (NZ + z - (int)directions[i].z) % NZ;
-                        particle_distributions[scalar_index(x,y,z,i)] = previous_particle_distributions[scalar_index(xmd,y,zmd,i)];
                     } else if(boundary_condition == "couette") {
 
                         //Using Bounce back approach for top & bottom walls..
