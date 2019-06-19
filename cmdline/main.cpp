@@ -55,13 +55,28 @@ int main(int argc, char** argv) {
 	std::cout << "tau: " << tau << std::endl;
 	Value& m_velocity_set = d["velocity_set"];
 	std::string velocity_set = m_velocity_set.GetString();
-	if(velocity_set != "D3Q15" && velocity_set != "D3Q27") {
-		std::cout << "Error: Please specify a valid velocity set such as D3Q15 or D3Q27." << std::endl;
+	Value& m_boundary_conditions = d["boundary_conditions"];
+	std::string boundary_conditions = m_boundary_conditions.GetString();
+	if(velocity_set != "D3Q15" && velocity_set != "D3Q27" && velocity_set != "D2Q9") {
+		std::cout << "Error: Please specify a valid velocity set such as D3Q15,D3Q27 or D2Q9." << std::endl;
 		return -1;
 	}
 	std::cout << "Velocity set: " << velocity_set << std::endl;
-
-	LBM *solver = new LBM(NX,NY,NZ, velocity_set, c_s, tau);
+	if(boundary_conditions != "lees_edwards" && boundary_conditions != "periodic" && boundary_conditions != "couette") {
+	    std::cout << "Errors: boundary_conditions in options.json can either be: periodic, Couette (D2Q9 only) or lees_edwards (Lees-Edwards Shear, Please see research paper by Alexander Wagner)";
+	    return -1;
+	}
+	std::cout << "Boundary conditions: " << boundary_conditions << std::endl;
+	    Value& m_gamma_dot = d["gamma_dot"];
+	    double gamma_dot = m_gamma_dot.GetDouble();
+	std::cout << "Shear rate (gamma_dot): " << gamma_dot << std::endl;
+	if(NZ != 1 && velocity_set == "D2Q9") {
+	    std::cout << "Warning: NZ=1 for D2Q9.";
+	    return -1;
+	}
+    Value& m_n_steps = d["n_steps"];
+    double nsteps = m_n_steps.GetInt();
+	LBM *solver = new LBM(NX,NY,NZ, velocity_set, c_s, tau, boundary_conditions, gamma_dot);
 	for(int i = 0; i < argc; i++) {
 		if(std::string(argv[i]) == "generate_ic") {
 			solver->output_lbm_data("ic.csv", true);
@@ -94,11 +109,12 @@ int main(int argc, char** argv) {
 	int runs = 1000 * scale * scale * scale;
 	for(int i = 0; i < runs; i = i + 1) {
 		solver->perform_timestep();
-		if((i+1) % 200 == 0) {
-			float percentage = (float)(i+1) / (float)(runs) * 100.0;
-			std::cout << "Saving data - " << (i+1)  << "/" << runs << " (" << percentage << "%)" << std::endl;
-			solver->output_lbm_data("output/" + std::to_string(i+1) + ".csv");
-		}
+		if((i+1) % save_every == 0) {
+            float percentage = (float) (i + 1) / (float) (runs) * 100.0;
+            std::cout << "Saving data - " << (i + 1) << "/" << runs << " (" << percentage << "%)" << std::endl;
+            solver->output_lbm_data("output/" + std::to_string(i + 1) + ".csv");
+            solver->output_velocity();
+        }
 	}
 	delete solver;
 	return 0;

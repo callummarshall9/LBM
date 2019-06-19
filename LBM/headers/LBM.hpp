@@ -9,11 +9,13 @@
 class LBM {
 
 public:
-	LBM(int grid_size, std::string velocity_set, double c_s, double tau);
-	LBM(int nx, int ny, int nz, std::string velocity_set, double c_s, double tau);
+	LBM(int grid_size, std::string velocity_set, double c_s, double tau, std::string boundary_conditions, double gamma_dot);
+	LBM(int nx, int ny, int nz, std::string velocity_set, double c_s, double tau, std::string boundary_condition, double gamma_dot);
 	~LBM();
 	void set_velocity(int x_field, int y_field, int z_field, double u_x, double u_y, double u_z);//Set velocity at position in velocity field.
 	void set_density(int x_field, int y_field, int z_field, double density);//Set density at position in density field.
+	double calculate_feq(int i, int j, int k, int w);
+    double calculate_feq(int i, int j, int k, int w, double u_le_x);
 	void output_density();
 	void output_velocity();
 	void output_test();
@@ -22,7 +24,11 @@ public:
 	void collision();//Perform the collision step. Assumes delta t / tau = 1.
 	void perform_timestep();//Delta t = 1 lattice unit.
 	void output_lbm_data(std::string filename, bool header=true);
+	void lookup_reverse();
+    void output_f_array(double* f_array, int z_index);
+	int get_time();
 private:
+    int time = 0;
 	int NX;
 	int NY;
 	int NZ;
@@ -31,10 +37,14 @@ private:
 	double tau;
 	double* density_field;
 	vector3<double>* velocity_field;
-	double* previous_equilibrium_distribution;
-	double* equilibrium_distribution;
-	int scalar_index(int x, int y, int z);
-	int scalar_index(int x, int y, int z, int w);
+	double* previous_particle_distributions;
+	double* particle_distributions;
+	inline int scalar_index(int x, int y, int z) const {
+        return (z * NX * NY) + (y * NX) + x;
+    }
+	inline int scalar_index(int x, int y, int z, int w) const {
+        return (x + y * NX + z * NX * NY + w * NX * NY * NZ);
+	}
 	void output_array(double *array);
 	void set_velocity_set(std::string velocity_set);//Used to internally generate velocity_set.
 	void initialise();
@@ -42,6 +52,10 @@ private:
 	int direction_size = 15;
 	vector3<int>* directions;
 	double* weights;
+	int* reverse_indexes;
+	std::string boundary_condition;
+	double gamma_dot;
+	std::string velocity_set;
 	//This will result in a change in the equlibrium function which will be reflected below.
 };
 

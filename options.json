@@ -1,8 +1,11 @@
 {
-  "grid_size": [32,32,32],
+  "grid_size": [3,5,1],
   "save_every": 200,
   "c_s": 0.577350269,
-  "velocity_set": "D3Q15",
+  "velocity_set": "D2Q9",
   "nu": 0.16666666666,
-  "tau": 1.0
+  "tau": 0.9,
+  "gamma_dot": 0.01,
+  "boundary_conditions": "couette",
+  "n_steps": 1000
 }
