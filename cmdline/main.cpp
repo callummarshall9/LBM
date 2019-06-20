@@ -75,7 +75,7 @@ int main(int argc, char** argv) {
 	    return -1;
 	}
     Value& m_n_steps = d["n_steps"];
-    double nsteps = m_n_steps.GetInt();
+    int n_steps = m_n_steps.GetInt();
 	LBM *solver = new LBM(NX,NY,NZ, velocity_set, c_s, tau, boundary_conditions, gamma_dot);
 	for(int i = 0; i < argc; i++) {
 		if(std::string(argv[i]) == "generate_ic") {
@@ -106,7 +106,7 @@ int main(int argc, char** argv) {
 
 	solver->output_lbm_data("output/0.csv");
 	int scale = 1;
-	int runs = 1000 * scale * scale * scale;
+	int runs = n_steps * scale * scale * scale;
 	for(int i = 0; i < runs; i = i + 1) {
 		solver->perform_timestep();
 		if((i+1) % save_every == 0) {

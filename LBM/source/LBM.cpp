@@ -16,11 +16,11 @@ LBM::LBM(int nx, int ny, int nz, std::string velocity_set, double m_c_s, double 
 
 void LBM::initialise() {
 	int box_flatten_length = NX * NY * NZ;
-	int equilibrium_flatten_length = box_flatten_length * direction_size;
+	int distributions_flatten_length = box_flatten_length * direction_size;
 	density_field = new double[box_flatten_length];
 	velocity_field = new vector3<double>[box_flatten_length];
-    previous_particle_distributions = new double[equilibrium_flatten_length];
-	particle_distributions = new double[equilibrium_flatten_length];
+    previous_particle_distributions = new double[distributions_flatten_length];
+	particle_distributions = new double[distributions_flatten_length];
 	for(int i = 0; i < NX * NY * NZ; i++) {
 		density_field[i] = 1;
 	}
@@ -192,16 +192,13 @@ void LBM::stream() {
                             int zmd = (NZ + z - directions[i].z) % NZ;
                             particle_distributions[scalar_index(x,y,z,i)] = previous_particle_distributions[scalar_index(xmd,ymd,zmd,i)];
                         }
-
-
-
                     } else if(boundary_condition == "lees_edwards" && velocity_set == "D2Q9") {
                             double d_x = gamma_dot * (double)NY * (double)time;
                             int d_x_I = d_x;
                             double d_x_R = d_x - d_x_I;
                             d_x_I = d_x_I % NX;
                             double s_1 = d_x_R;
-                            double s_2 = 1 - d_x_R;
+                            double s_2 = 1.0 - d_x_R;
                             //s_1=0;s_2=1;
                             int ymd = (NY + y - directions[i].y) % NY;
                             int zmd = (NZ + z - directions[i].z) % NZ;
@@ -211,28 +208,27 @@ void LBM::stream() {
                                 //Ebrahim Jahanshahi Javaran, Mohammed Rahnama and Saeed Jafari.
                                 //Bottom Wall.
                                 int x_pos;
-                                x_pos = (x+d_x_I + NX - directions[i].x) % NX;
+                                x_pos = (x + d_x_I + NX - directions[i].x) % NX;
 
                                 int x_shifted;
-                                x_shifted = (x+d_x_I + NX +1 - directions[i].x) % NX;
+                                x_shifted = (x + d_x_I + 1 + NX - directions[i].x) % NX;
 
-                                double galilean_transformation_pos = previous_particle_distributions[scalar_index(x_pos,ymd,zmd,i)] + calculate_feq(x_pos,ymd,zmd,i,-1 * gamma_dot * (double)NY) - calculate_feq(x_pos,ymd,zmd,i,0);
-                                double galilean_transformation_shift = previous_particle_distributions[scalar_index(x_shifted,ymd,zmd,i)] + calculate_feq(x_shifted,ymd,zmd,i,-1 * gamma_dot * (double)NY) - calculate_feq(x_shifted,ymd,zmd,i,0);
-                                particle_distributions[scalar_index(x,y,z,i)]= s_1 * galilean_transformation_shift +
-                                        s_2 * galilean_transformation_pos;
+                                //double galilean_transformation_pos = previous_particle_distributions[scalar_index(x_pos,ymd,zmd,i)] + calculate_feq(x_pos,ymd,zmd,i,-1 * gamma_dot * (double)NY) - calculate_feq(x_pos,ymd,zmd,i,0);
+                                //double galilean_transformation_shift = previous_particle_distributions[scalar_index(x_shifted,ymd,zmd,i)] + calculate_feq(x_shifted,ymd,zmd,i,-1 * gamma_dot * (double)NY) - calculate_feq(x_shifted,ymd,zmd,i,0);
+                                double galilean_transformation = calculate_feq(x,y,z,i,-1.0 * gamma_dot * (double)NY) - calculate_feq(x,y,z,i);
+                                particle_distributions[scalar_index(x,y,z,i)]= galilean_transformation + s_1 * previous_particle_distributions[scalar_index(x_shifted,ymd,zmd,i)] + s_2 * previous_particle_distributions[scalar_index(x_pos,ymd,zmd,i)];
                             } else if(y==NY-1 && directions[i].y == -1) {
                                 //Equation (20) from Combining Lees-Edwards boundary conditions with smoothed profile-lattice Boltzmann methods by
                                 //Ebrahim Jahanshahi Javaran, Mohammed Rahnama and Saeed Jafari.
                                 //Top Wall.
                                 int x_pos;
-                                x_pos = (x-d_x_I + NX - directions[i].x) % NX;
-
+                                x_pos = (x - d_x_I + NX - directions[i].x) % NX;
                                 int x_shifted;
-                                x_shifted = (x-d_x_I + NX -1 - directions[i].x) % NX;
-                                double galilean_transformation_pos = previous_particle_distributions[scalar_index(x_pos,ymd,zmd,i)] + calculate_feq(x_pos,ymd,zmd,i,1 * gamma_dot * (double)NY) - calculate_feq(x_pos,ymd,zmd,i,0);
-                                double galilean_transformation_shift = previous_particle_distributions[scalar_index(x_shifted,ymd,zmd,i)] + calculate_feq(x_shifted,ymd,zmd,i,1 * gamma_dot * (double)NY) - calculate_feq(x_shifted,ymd,zmd,i,0);
-                                particle_distributions[scalar_index(x,y,z,i)]= s_1 * galilean_transformation_shift +
-                                        s_2 * galilean_transformation_pos;
+                                x_shifted = (x - d_x_I - 1 + NX - directions[i].x) % NX;
+                                //double galilean_transformation_pos = previous_particle_distributions[scalar_index(x_pos,ymd,zmd,i)] + calculate_feq(x_pos,ymd,zmd,i,1 * gamma_dot * (double)NY) - calculate_feq(x_pos,ymd,zmd,i,0);
+                                //double galilean_transformation_shift = previous_particle_distributions[scalar_index(x_shifted,ymd,zmd,i)] + calculate_feq(x_shifted,ymd,zmd,i,1 * gamma_dot * (double)NY) - calculate_feq(x_shifted,ymd,zmd,i,0);
+                                double galilean_transformation = calculate_feq(x,y,z,i,gamma_dot * (double)NY) - calculate_feq(x,y,z,i);
+                                particle_distributions[scalar_index(x,y,z,i)]= galilean_transformation + s_1 * previous_particle_distributions[scalar_index(x_shifted,ymd,zmd,i)] + s_2 * previous_particle_distributions[scalar_index(x_pos,ymd,zmd,i)];
                             } else {
                                 //Interior points. (Enforce periodicity along x axis);.
                                 int xmd = (NX + x - directions[i].x) % NX;
