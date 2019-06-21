@@ -19,6 +19,7 @@ public:
 	void output_density();
 	void output_velocity();
 	void output_test();
+	void output_indices_file();
 	void compute_density_momentum_moment();
 	void stream();//Stream the current equilibrium distribution to the next distribution.
 	void collision();//Perform the collision step. Assumes delta t / tau = 1.
